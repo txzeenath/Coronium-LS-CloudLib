@@ -28,7 +28,7 @@ local Cloud = {}; function Cloud.new() local app = {}
 --======================================================================--
 --== Constants
 --======================================================================--
-app.version     = '1.1.1'
+app.version     = '1.3.0'
 app.home        = '/home/cloud'
 app.lib         = '/usr/local/cloud'
 --== HTTP methods
