@@ -30,7 +30,8 @@ local Cloud = {}; function Cloud.new() local app = {}
 --======================================================================--
 app.version     = '1.3.0'
 app.home        = '/home/cloud'
-app.lib         = '/usr/local/cloud'
+app.core        = '/usr/local/cloud'
+app.lib         = '/usr/local/lib/cloud'
 --== HTTP methods
 app.GET         = "GET"
 app.POST        = "POST"
@@ -74,6 +75,7 @@ app.moses       = require( 'moses' ) -- moses lib
 app.crypto      = require( 'crypto' ) --lua crypto lib
 app.s3          = require( 'resty.s3' ) -- S3 transfer
 app.validator   = require( 'resty.validation' ) -- validation lib
+app.redis       = require( 'resty.redis' ) -- redis lib
 --======================================================================--
 --== App Utils
 --======================================================================--
