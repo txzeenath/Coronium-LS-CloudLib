@@ -57,10 +57,10 @@ function auth.request(req)
   if #parts > 0 then
 
     local app_id = tostring(parts[1])
-    local app_config_path = string.format("/usr/local/cloud/apps/%s/config.lua", app_id)
+    local app_config_path = string.format("/home/cloud/projects/%s/config.lua", app_id)
 
     --utils
-    local Utils = require('cloud.utils')
+    local Utils = require('utils')
 
     --check for app config
     if not Utils.fileExists( app_config_path ) then

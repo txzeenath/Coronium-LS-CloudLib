@@ -32,7 +32,7 @@ function mod.file(req)
   end
   local src_file_dir = headers["X-Cloud-Dir"] or nil
 
-  local files_dir = '/usr/local/cloud/files'
+  local files_dir = '/home/cloud/files'
 
   local sock, err = req.socket()
 

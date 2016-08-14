@@ -32,7 +32,7 @@ function req.new( url, port )
   -- @keepalive_poolsize
   function r:request( req_params, timeout_ms, keepalive_ms, keepalive_poolsize )
 
-    local response = require('cloud.response')
+    local response = require('response')
 
     local timeout_ms = timeout_ms or 5000 --5 sec
     local keepalive_ms = keepalive_ms or 30000 --30 secs

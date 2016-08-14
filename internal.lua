@@ -28,9 +28,6 @@ function mod.request(path, args_tbl, method)
   --read body for safety
   ngx.req.read_body()
 
-  --get master key
-  ngx.header['X-Cloud-Master'] = tostring(require('cloudconfig').key)
-
   --set up request params
   local params =
   {

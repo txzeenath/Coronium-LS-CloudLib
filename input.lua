@@ -102,7 +102,7 @@ function mod.request(req)
 
   ngx.ctx.func_name = func_name
 
-  ngx.var.template_root = '/usr/local/cloud/apps/'..module_name..'/tpl'
+  ngx.var.template_root = '/home/cloud/projects/'..module_name..'/tpl'
 
   local api_path = string.format("%s.api", module_name )
 

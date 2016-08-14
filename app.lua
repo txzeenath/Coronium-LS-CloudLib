@@ -53,19 +53,19 @@ app.DESCENDING  = 'DESC'
 --======================================================================--
 --== App Modules
 --======================================================================--
-app.lang        = require('cloud.lang') --internal translation
+app.lang        = require('lang') --internal translation
 app.json        = require('cjson') -- cjson
-app.api         = require('cloud.module').api --page request holder
-app.mysql       = require('cloud.mysql') -- mysql db
-app.mongo       = require('cloud.mongo') -- mongo db
-app.error       = require('cloud.error').new --structured error
-app.geoip       = require('cloud.geoip') --geo ip meta
-app.async       = require('cloud.async') -- async generator
-app.job         = require('cloud.job') -- job generator
-app.time        = require('cloud.time') --times
-app.network     = require('cloud.network').new -- http handler
-app.internal    = require('cloud.internal') --cross-module requests
-app.template    = require('cloud.template') --templating
+app.api         = require('module').api --page request holder
+app.mysql       = require('mysql') -- mysql db
+app.mongo       = require('mongo') -- mongo db
+app.error       = require('error').new --structured error
+app.geoip       = require('geoip') --geo ip meta
+app.async       = require('async') -- async generator
+app.job         = require('job') -- job generator
+app.time        = require('time') --times
+app.network     = require('network').new -- http handler
+app.internal    = require('internal') --cross-module requests
+app.template    = require('template') --templating
 --======================================================================--
 --== 3rd Party Modules
 --======================================================================--
@@ -79,16 +79,16 @@ app.redis       = require( 'resty.redis' ) -- redis lib
 --======================================================================--
 --== App Utils
 --======================================================================--
-app.pp          = require( 'cloud.utils' ).pp -- table pretty print to log
-app.sf          = require( 'cloud.utils' ).strf --string.format
-app.trim        = require( 'cloud.utils' ).trim --string trim
-app.split       = require( 'cloud.utils' ).split --string split
-app.uuid        = require( 'cloud.utils' ).uuid --unique id (requires libuuid)
-app.jtbl        = require( 'cloud.utils' ).jtable --JSONable table .toJson()
-app.tmerge      = require( 'cloud.utils' ).table_merge -- table merging util
-app.exists      = require( 'cloud.utils' ).fileExists -- check for file
-app.encode      = require( 'cloud.encoding' ).encode --encoding/decoding
-app.decode      = require( 'cloud.encoding' ).decode --encoding/decoding
+app.pp          = require( 'utils' ).pp -- table pretty print to log
+app.sf          = require( 'utils' ).strf --string.format
+app.trim        = require( 'utils' ).trim --string trim
+app.split       = require( 'utils' ).split --string split
+app.uuid        = require( 'utils' ).uuid --unique id (requires libuuid)
+app.jtbl        = require( 'utils' ).jtable --JSONable table .toJson()
+app.tmerge      = require( 'utils' ).table_merge -- table merging util
+app.exists      = require( 'utils' ).fileExists -- check for file
+app.encode      = require( 'encoding' ).encode --encoding/decoding
+app.decode      = require( 'encoding' ).decode --encoding/decoding
 app.jobs        = ngx.shared.jobs --jobs ref shared dict
 app.null        = ngx.null --JSONable null for comparisons
 app.isAjax      = false --set on request input

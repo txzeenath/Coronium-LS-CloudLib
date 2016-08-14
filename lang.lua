@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ]]
 --+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
-local default_en = require('cloud.lang.en_us')
+local default_en = require('lang.en_us')
 local lang =
 {
   lang_code = 'en_us',
@@ -29,7 +29,7 @@ function lang:change(lang_code)
   self.lang_code = lang_code or self.default_lang_code or 'en_us'
   --get lang
   self.lang = nil
-  self.lang = require('cloud.lang.'..self.lang_code)
+  self.lang = require('lang.'..self.lang_code)
 
   return self
 end
