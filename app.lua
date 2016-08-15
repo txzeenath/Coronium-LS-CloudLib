@@ -53,7 +53,6 @@ app.DESCENDING  = 'DESC'
 --======================================================================--
 --== App Modules
 --======================================================================--
-app.lang        = require('lang') --internal translation
 app.json        = require('cjson') -- cjson
 app.api         = require('module').api --page request holder
 app.mysql       = require('mysql') -- mysql db
