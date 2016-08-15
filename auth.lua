@@ -38,7 +38,7 @@ function auth.request(req)
   local method = req.get_method()
 
   --all GETs are clear
-  if method == cloud.GET then
+  if method == 'GET' then
     return
   end
 
