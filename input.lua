@@ -51,7 +51,7 @@ function mod.request(req)
     ngx.ctx.isAjax = true
   end
 
-  ngx.ctx.key = headers["X-Cloud-Key"] or nil
+  ngx.ctx.project_key = headers["X-Project-Key"] or nil
 
   ngx.ctx.method = string.lower(method)
   ngx.ctx.headers = headers
