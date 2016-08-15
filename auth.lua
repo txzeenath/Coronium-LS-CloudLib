@@ -35,9 +35,15 @@ local auth = {}
 
 function auth.request(req)
 
+  local method = req.get_method()
+
+  --all GETs are clear
+  if method == cloud.GET then
+    return
+  end
+
   local url = require('socket.url')
 
-  local method = req.get_method()
   local headers = req.get_headers()
 
   ngx.ctx.host        = headers['Host'] or nil
