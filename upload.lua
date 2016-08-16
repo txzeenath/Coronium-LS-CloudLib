@@ -48,7 +48,7 @@ function mod.file(req)
     os.execute( 'mkdir -p ' .. file_destination )
     os.execute( 'chmod -R 0775 ' .. file_destination )
   else
-    src_file_dir = '/'
+    src_file_dir = '/files'
     file_destination = files_dir
     os.execute( 'mkdir -p ' .. files_dir )
     os.execute( 'chmod -R 0775 ' .. files_dir )
