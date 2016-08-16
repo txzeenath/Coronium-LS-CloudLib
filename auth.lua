@@ -22,92 +22,67 @@ limitations under the License.
 --== xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 local auth = {}
 
-function auth._checkHash()
-  local normalized = ngx.ctx.host .. ngx.ctx.app_key .. ngx.var.uri
-  local hash = ngx.md5(normalized)
-
-  if tostring(hash) ~= tostring(ngx.ctx.cloud_hash) then
-    return nil
-  end
-
-  return true
-end
+-- function auth._checkHash()
+--   local normalized = ngx.ctx.host .. ngx.ctx.project_key .. ngx.var.uri
+--   local hash = ngx.md5(normalized)
+--
+--   if tostring(hash) ~= tostring(ngx.ctx.cloud_hash) then
+--     return nil
+--   end
+--
+--   return true
+-- end
 
 function auth.request(req)
 
+  local method = req.get_method()
+
+  --all GETs are clear
+  if method == 'GET' then
+    return
+  end
+
   local url = require('socket.url')
 
-  local method = req.get_method()
   local headers = req.get_headers()
 
   ngx.ctx.host        = headers['Host'] or nil
-  ngx.ctx.app_key     = headers["X-Cloud-Key"] or nil
-  ngx.ctx.cloud_key   = headers["X-Cloud-Master"] or nil
-  ngx.ctx.cloud_hash  = headers['X-Cloud-Hash'] or nil
-
-  --open cloud config (from support dir)
-  local cloud_config = require('cloudconfig')
-
-  --check for cloud level reject flag
-  if cloud_config.reject_all then
-    return ngx.exit(403)
-  end
+  ngx.ctx.project_key = headers["X-Project-Key"] or nil
 
   local parts = url.parse_path(ngx.var.uri)
   if #parts > 0 then
 
-    local app_id = tostring(parts[1])
-    local app_config_path = string.format("/usr/local/cloud/apps/%s/config.lua", app_id)
+    local project_id = tostring(parts[1])
+    local project_config_path = string.format("/home/cloud/projects/%s/config.lua", project_id)
 
     --utils
-    local Utils = require('cloud.utils')
+    local Utils = require('utils')
 
     --check for app config
-    if not Utils.fileExists( app_config_path ) then
+    if not Utils.fileExists( project_config_path ) then
       --no can find
       return ngx.exit(404)
     end
 
     --open app config
-    local app_config_mod = require( app_id..'.config' )
+    local project_config_mod = require( project_id..'.config' )
 
     --defaults
-    local app_config =
+    local project_config =
     {
-      key = nil,
-      verify_hash = true,
-      public = nil,
-      reject_all = nil
+      key = nil
     }
 
     --merge config
-    app_config = Utils.table_merge( app_config, app_config_mod )
-
-    --app level reject flag
-    if app_config.reject_all then
-      return ngx.exit(403)
-    end
+    project_config = Utils.table_merge( project_config, project_config_mod )
 
     --if this app is flagged public, carry on
-    if app_config.public == true then
+    if project_config.public == true then
       return
     end
 
-    --if we have a matching master key, carry on
-    if ngx.ctx.cloud_key == cloud_config.key then
-      return
-    end
-
-    --check app key
-    if ngx.ctx.app_key == app_config.key then
-      if app_config.verify_hash then
-        --check message hash
-        if not auth._checkHash() then
-          --hash no matchy
-          return ngx.exit(400)
-        end
-      end
-
+    --check project key
+    if ngx.ctx.project_key == project_config.key then
       return
     end
 
@@ -126,14 +101,7 @@ function auth.upload( req )
   local headers = req.get_headers()
 
   ngx.ctx.host        = headers['Host'] or nil
-  ngx.ctx.app_key     = headers["X-Cloud-Key"] or nil
-  ngx.ctx.cloud_key   = headers["X-Cloud-Master"] or nil
-  ngx.ctx.cloud_hash  = headers['X-Cloud-Hash'] or nil
-
-  --check hash
-  if not auth._checkHash() then
-    return ngx.exit(401)
-  end
+  ngx.ctx.project_key = headers["X-Project-Key"] or nil
 
   return true
 end

@@ -47,11 +47,11 @@ function mod.request(req)
 
   --check HTTPXMLRequest
   ngx.ctx.isAjax = false
-  if headers["XMLHttpRequest"] then
+  if headers["x-requested-with"] == 'XMLHttpRequest' then
     ngx.ctx.isAjax = true
   end
 
-  ngx.ctx.key = headers["X-Cloud-Key"] or nil
+  ngx.ctx.project_key = headers["X-Project-Key"] or nil
 
   ngx.ctx.method = string.lower(method)
   ngx.ctx.headers = headers
@@ -102,7 +102,7 @@ function mod.request(req)
 
   ngx.ctx.func_name = func_name
 
-  ngx.var.template_root = '/usr/local/cloud/apps/'..module_name..'/tpl'
+  ngx.var.template_root = '/home/cloud/projects/'..module_name..'/tpl'
 
   local api_path = string.format("%s.api", module_name )
 
