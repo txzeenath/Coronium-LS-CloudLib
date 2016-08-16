@@ -47,7 +47,7 @@ function mod.request(req)
 
   --check HTTPXMLRequest
   ngx.ctx.isAjax = false
-  if headers["XMLHttpRequest"] then
+  if headers["x-requested-with"] == 'XMLHttpRequest' then
     ngx.ctx.isAjax = true
   end
 
