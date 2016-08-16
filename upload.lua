@@ -35,42 +35,40 @@ function mod.file(req)
   local files_dir = '/home/cloud/files'
 
   local sock, err = req.socket()
-
   local data, err, partial = sock:receive('*a')
   if not data then
     ngx.log(ngx.ERR, "No data stream "..err)
     return ngx.exit(500)
   end
 
-  local file_dest, msg
-
-  --create file dest
-  file_dest = files_dir
-  if src_file_dir then
-    file_dest = file_dest .. src_file_dir
-    os.execute('mkdir -p '..file_dest)
-    os.execute('chmod -R 0775 '..file_dest)
+  local file_destination, msg
+  
+  if src_file_dir ~= nil then
+    file_destination = files_dir .. '/' .. src_file_dir
+    os.execute( 'mkdir -p ' .. file_destination )
+    os.execute( 'chmod -R 0775 ' .. file_destination )
   else
-    file_dest = file_dest .. '/'
+    src_file_dir = '/'
+    file_destination = files_dir
+    os.execute( 'mkdir -p ' .. files_dir )
+    os.execute( 'chmod -R 0775 ' .. files_dir )
   end
 
-  file_dest = file_dest .. '/' .. src_file_name
-  if os.execute('touch '..file_dest) ~= 0 then
+  file_destination = file_destination .. '/' .. src_file_name
+
+  if os.execute( 'touch '..file_destination ) ~= 0 then
     msg = { result = { error = "Could not create the file!" } }
   else
+
     if partial ~= nil then
       data = data .. partial
     end
 
-    os.execute('chmod 0664 '..file_dest)
+    os.execute( 'chmod 0664 ' .. file_destination )
 
-    local f = io.open( file_dest, 'wb' )
+    local f = io.open( file_destination, 'wb' )
     f:write( data )
     f:close()
-
-    if not src_file_dir then
-      src_file_dir = '/'
-    end
 
     msg = { result = { baseDirectory = src_file_dir, filename = src_file_name } }
   end
