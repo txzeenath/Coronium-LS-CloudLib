@@ -317,7 +317,7 @@ function Mongo.new( host, port )
             doc = parseDoc( doc )
             documents[idx] = doc
           end
-
+          if not next(documents) then documents = nil end --Don't return an empty table
           return documents, nil
 
         end
