@@ -187,15 +187,19 @@ function Mongo.new( host, port )
           return true, nil
         end
 
-        function m:update(selector, update, upsert, multi_update, safe)
+        function m:update(selector, update, upsert, multi_update, replace, safe)
           assert(selector, "An update selector is required.")
           assert(update, "An update table is required.")
 
           local upsert = upsert or false
           local multi_update = multi_update or false
           local safe = safe or false
+          local replace = replace or false
+          if not replace then 
+             update = {['$set'] = update}
+          end
 
-          local rows, err = self.collection:update(selector, update, upsert, multi_update, safe)
+          local rows, err = self.collection:update(selector, update, bool2num(upsert), bool2num(multi_update), safe)
           if not rows then
             return nil, err
           end
@@ -214,6 +218,7 @@ function Mongo.new( host, port )
 
         function m:delete(selector, single, safe)
           assert(selector, "Delete selector is missing.")
+          if single == nil then single = true end
           single = bool2num( single )
 
           local rows, err = self.collection:delete(selector, single, safe)
