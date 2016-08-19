@@ -58,7 +58,7 @@ function Mongo.new( host, port )
   -- helper for cleaning/replacing BSON values that will
   -- fail on a JSON encode.
   local function parseDoc( doc, hide_meta )
-    if not doc._id then return nil,doc end
+    if not doc or not doc._id then return nil,(doc or "Could not parse document") end
     
     if doc then
       if not hide_meta then
@@ -70,8 +70,6 @@ function Mongo.new( host, port )
 
       return doc, nil
     end
-
-    return nil, "Could not parse document."
   end
 
   --==============================================================--
