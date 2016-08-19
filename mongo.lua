@@ -58,6 +58,8 @@ function Mongo.new( host, port )
   -- helper for cleaning/replacing BSON values that will
   -- fail on a JSON encode.
   local function parseDoc( doc, hide_meta )
+    if not doc._id then return nil,doc end
+    
     if doc then
       if not hide_meta then
         doc._ts   = doc._id:get_ts() --timestamp
@@ -237,9 +239,9 @@ function Mongo.new( host, port )
             return nil, "Could not find document."
           end
 
-          res = parseDoc( res )
+          res,err = parseDoc( res )
 
-          return res, nil
+          return res, err
         end
 
         function m:find(query, fld_filter, num_each_query)
